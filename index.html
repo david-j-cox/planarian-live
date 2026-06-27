@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Planarian Real-Time Behavior Tracking</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
   <style>
     :root { --bg:#0e1116; --panel:#161b22; --fg:#e6edf3; --muted:#8b949e; --accent:#3fb950; }
     * { box-sizing: border-box; }
@@ -75,9 +76,50 @@
              vertical-align:middle; }
     footer { text-align:center; color:var(--muted); font-size:.8rem; padding:8px 16px 32px; }
     a { color:#58a6ff; text-decoration:none; }
+    /* lab-branded top bar (links back to the main lab site; echoes its cyber theme) */
+    .lab-bar { display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+               padding:9px 18px; background:#0a0a0a; border-bottom:2px solid #00ffff; }
+    .lab-brand { display:flex; align-items:center; gap:11px; text-decoration:none; }
+    .lab-brand img { width:40px; height:40px; object-fit:contain; filter:drop-shadow(0 0 8px #00ffff); }
+    .lb-title { font-family:'Orbitron',sans-serif; font-weight:900; font-size:1.02rem; color:#00ffff;
+                text-shadow:0 0 8px rgba(0,255,255,.55); line-height:1.05; letter-spacing:.5px; }
+    .lb-sub { display:block; font-family:'Orbitron',sans-serif; font-weight:700; font-size:.6rem;
+              color:#ff00ff; text-shadow:0 0 8px rgba(255,0,255,.55); letter-spacing:2px; margin-top:2px; }
+    .lab-nav { margin-left:auto; display:flex; gap:3px; flex-wrap:wrap; }
+    .lab-nav a { font-family:'Orbitron',sans-serif; font-size:.7rem; font-weight:700; color:#e6edf3;
+                 padding:5px 9px; border:1px solid transparent; border-radius:4px; transition:all .2s; }
+    .lab-nav a:hover { color:#00ffff; border-color:#00ffff; box-shadow:0 0 8px rgba(0,255,255,.45); }
+    @media (max-width:640px){ .lab-nav{ width:100%; margin:6px 0 0; } }
+    /* model-performance metrics */
+    .metrics { padding:6px 16px 18px; }
+    .metric-group { margin-top:14px; }
+    .metric-group h3 { margin:0 0 2px; font-size:.98rem; color:var(--fg); }
+    .metric-sub { margin:0 0 10px; color:var(--muted); font-size:.8rem; }
+    .stat-row { display:flex; flex-wrap:wrap; gap:10px; }
+    .stat { background:#0e1116; border:1px solid #21262d; border-radius:8px;
+            padding:10px 14px; min-width:104px; flex:1 1 104px; }
+    .stat .num { display:block; font-size:1.32rem; font-weight:700; color:var(--accent); }
+    .stat .lbl { display:block; color:var(--muted); font-size:.76rem; margin-top:2px; }
+    .metric-note { margin:10px 2px 0; color:var(--muted); font-size:.8rem; }
+    .metric-foot { margin:16px 2px 0; color:var(--muted); font-size:.78rem; line-height:1.5;
+                   border-top:1px solid #21262d; padding-top:10px; }
   </style>
 </head>
 <body>
+  <header class="lab-bar">
+    <a class="lab-brand" href="https://www.behavioral-data-science.org/"
+       title="Behavioral Data Science Research Lab">
+      <img src="pliny.png" alt="Pliny the Pigeon" />
+      <span class="lb-title">BEHAVIORAL DATA SCIENCE<span class="lb-sub">RESEARCH LAB</span></span>
+    </a>
+    <nav class="lab-nav">
+      <a href="https://www.behavioral-data-science.org/">HOME</a>
+      <a href="https://www.behavioral-data-science.org/about.html">ABOUT</a>
+      <a href="https://www.behavioral-data-science.org/projects.html">PROJECTS</a>
+      <a href="https://www.behavioral-data-science.org/publications.html">PUBLICATIONS</a>
+    </nav>
+  </header>
+
   <header>
     <h1>Planarian Real-Time Behavior Tracking</h1>
     <p>A live look at a single planarian flatworm in its dish. The stream below is the raw rig;
@@ -240,11 +282,44 @@
           the plot here - so the data trails the video by about 3 minutes.</p>
       </div>
     </div>
+
+    <div class="card">
+      <h2>How well do the models perform?</h2>
+      <div class="metrics">
+        <div class="metric-group">
+          <h3>Location tracking</h3>
+          <p class="metric-sub">YOLO detector + temporal cleanup, scored against 200 hand-labeled frames.</p>
+          <div class="stat-row">
+            <div class="stat"><span class="num">0.68 mm</span><span class="lbl">median error</span></div>
+            <div class="stat"><span class="num">1.57 mm</span><span class="lbl">90th percentile</span></div>
+            <div class="stat"><span class="num">3.66 mm</span><span class="lbl">worst case</span></div>
+            <div class="stat"><span class="num">100%</span><span class="lbl">within 5 mm</span></div>
+          </div>
+          <p class="metric-note">For scale, the dish is about 50 mm across &mdash; a typical error is roughly 1% of the arena.</p>
+        </div>
+        <div class="metric-group">
+          <h3>Behavior classification</h3>
+          <p class="metric-sub">5-class model, leave-one-out cross-validation (F1 per behavior; 1.0 is perfect).</p>
+          <div class="stat-row">
+            <div class="stat"><span class="num">0.84</span><span class="lbl">overall (macro-F1)</span></div>
+            <div class="stat"><span class="num">0.92</span><span class="lbl">gliding</span></div>
+            <div class="stat"><span class="num">0.89</span><span class="lbl">contracted</span></div>
+            <div class="stat"><span class="num">0.86</span><span class="lbl">resting</span></div>
+            <div class="stat"><span class="num">0.86</span><span class="lbl">turning</span></div>
+            <div class="stat"><span class="num">0.65</span><span class="lbl">wig-wag</span></div>
+          </div>
+        </div>
+        <p class="metric-foot">Numbers are from held-out evaluation on this rig's footage. On the live plot,
+          the locomotion states (gliding / resting / turning) are read directly from the worm's motion, while
+          the model supplies the postural calls (contracted, wig-wag).</p>
+      </div>
+    </div>
   </div>
 
   <footer>
     Built with a YOLO-based tracker running on-device. Plot image refreshes automatically;
-    reload the page if the stream goes idle.
+    reload the page if the stream goes idle.<br>
+    A project of the <a href="https://www.behavioral-data-science.org/">Behavioral Data Science Research Lab</a>.
   </footer>
 
   <script>
