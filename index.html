@@ -57,7 +57,7 @@
     <div class="card">
       <h2>Live rig <span class="dot">&#9679;</span></h2>
       <div class="video">
-        <iframe
+        <iframe id="twitch"
           src="https://player.twitch.tv/?channel=behavioraldatasciencelab&parent=david-j-cox.github.io&parent=localhost&parent=127.0.0.1&muted=true&autoplay=true"
           allowfullscreen
           title="Live Twitch stream of the planarian rig"></iframe>
@@ -104,6 +104,24 @@
       stamp.textContent = 'image refreshed ' + now.toLocaleTimeString();
     });
     setInterval(refresh, 60000);   // every 60 s
+
+    // Twitch player self-heal. The embed sometimes shows "Error #1000 (video
+    // download cancelled)" after the tab has been backgrounded for a while
+    // (Twitch drops the idle stream). We can't read the cross-origin player's
+    // state, so we reload the iframe only when the tab returns from being hidden
+    // long enough to have likely timed out -- never mid-watch, so active viewing
+    // isn't interrupted.
+    const player = document.getElementById('twitch');
+    const playerSrc = player ? player.src : null;
+    let hiddenAt = null;
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        hiddenAt = Date.now();
+      } else if (hiddenAt && player && playerSrc && (Date.now() - hiddenAt) > 60000) {
+        player.src = playerSrc;   // force a fresh player load
+        hiddenAt = null;
+      }
+    });
   </script>
 </body>
 </html>
