@@ -55,6 +55,13 @@
     .video-help .browser { color:var(--fg); font-weight:600; }
     .video-help kbd { background:#21262d; border:1px solid #30363d; border-radius:4px;
                       padding:1px 5px; font-size:.9em; font-family:inherit; }
+    /* top-level "Player not loading?" toggle: borderless so it reads as the prompt,
+       not another nested box; its body holds the lead fix + the option accordions. */
+    .video-help details.help-top { border:none; background:none; margin:0; }
+    .video-help details.help-top > summary { padding:2px 0; }
+    .video-help .help-hint { color:var(--muted); font-weight:400; }
+    .video-help .help-body { padding:4px 0 2px; }
+    .video-help .intro { margin:8px 0; }
     .plot { display:block; width:100%; height:auto; background:#fff; }
     .arch { padding:14px 16px 16px; }
     .arch svg { display:block; width:100%; height:auto; }
@@ -94,8 +101,11 @@
         <span class="badge"><span class="tri"></span> Watch live on Twitch</span>
       </a>
       <div class="video-help">
-        <strong>Player not loading?</strong> If you see <em>"Error #1000 - the video download was
-        cancelled,"</em> the stream itself is fine - it is your browser, not the rig.
+        <details class="help-top">
+          <summary><strong>Player not loading?</strong> <span class="help-hint">&mdash; fixes for "Error #1000" / a blank player</span></summary>
+          <div class="help-body">
+        <p class="intro">If you see <em>"Error #1000 - the video download was cancelled,"</em> the
+          stream itself is fine - it is your browser, not the rig.</p>
 
         <p class="lead-fix"><strong>Most common fix:</strong> make sure you are
           <strong>logged in to Twitch</strong>. Open
@@ -151,6 +161,8 @@
               <a href="https://www.twitch.tv/behavioraldatasciencelab" target="_blank"
                  rel="noopener">twitch.tv/behavioraldatasciencelab</a>.</li>
           </ol>
+        </details>
+          </div>
         </details>
       </div>
     </div>
