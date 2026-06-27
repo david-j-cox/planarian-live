@@ -37,6 +37,9 @@
     .video-help { padding:10px 16px 14px; color:var(--muted); font-size:.82rem; line-height:1.5;
                   border-top:1px solid #21262d; }
     .video-help strong { color:var(--fg); font-weight:600; }
+    .video-help .lead-fix { margin:10px 0 4px; padding:10px 12px; border-radius:8px;
+                            background:rgba(63,185,80,.10); border:1px solid rgba(63,185,80,.35);
+                            color:var(--fg); }
     .video-help code { background:#0b0e13; padding:1px 5px; border-radius:4px;
                        font-size:.92em; color:#c9d1d9; }
     .video-help details { margin:7px 0; border:1px solid #21262d; border-radius:8px;
@@ -88,8 +91,13 @@
       </a>
       <div class="video-help">
         <strong>Player not loading?</strong> If you see <em>"Error #1000 - the video download was
-        cancelled,"</em> that is your browser blocking Twitch's video, not the rig (the stream itself
-        is fine). Click any option below for step-by-step instructions.
+        cancelled,"</em> the stream itself is fine - it is your browser, not the rig.
+
+        <p class="lead-fix"><strong>Most common fix:</strong> make sure you are
+          <strong>logged in to Twitch</strong>. Open
+          <a href="https://www.twitch.tv/login" target="_blank" rel="noopener">twitch.tv</a>, sign in,
+          then come back and reload this page. The embedded player needs a signed-in Twitch session to
+          start. Still stuck? Try the options below.</p>
 
         <details>
           <summary>Fastest test: is it really my browser?</summary>
