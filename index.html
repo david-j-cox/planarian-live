@@ -34,11 +34,24 @@
       .mobile-watch .tri { width:0; height:0; border-style:solid;
         border-width:10px 0 10px 16px; border-color:transparent transparent transparent #fff; }
     }
-    .video-help { padding:10px 16px; color:var(--muted); font-size:.82rem; line-height:1.5;
+    .video-help { padding:10px 16px 14px; color:var(--muted); font-size:.82rem; line-height:1.5;
                   border-top:1px solid #21262d; }
     .video-help strong { color:var(--fg); font-weight:600; }
-    .video-help ul { margin:6px 0 0; padding-left:18px; }
-    .video-help li { margin:2px 0; }
+    .video-help code { background:#0b0e13; padding:1px 5px; border-radius:4px;
+                       font-size:.92em; color:#c9d1d9; }
+    .video-help details { margin:7px 0; border:1px solid #21262d; border-radius:8px;
+                          background:#0e1116; }
+    .video-help summary { cursor:pointer; padding:9px 12px; font-weight:600; color:var(--fg);
+                          list-style:none; user-select:none; }
+    .video-help summary::-webkit-details-marker { display:none; }
+    .video-help summary::before { content:"\25B8"; display:inline-block; width:1em;
+                                  margin-right:6px; color:var(--accent); transition:transform .15s; }
+    .video-help details[open] > summary::before { transform:rotate(90deg); }
+    .video-help .steps { margin:0; padding:0 14px 12px 32px; }
+    .video-help .steps li { margin:5px 0; }
+    .video-help .browser { color:var(--fg); font-weight:600; }
+    .video-help kbd { background:#21262d; border:1px solid #30363d; border-radius:4px;
+                      padding:1px 5px; font-size:.9em; font-family:inherit; }
     .plot { display:block; width:100%; height:auto; background:#fff; }
     .meta { padding:10px 16px; color:var(--muted); font-size:.85rem;
             display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
@@ -76,13 +89,57 @@
       <div class="video-help">
         <strong>Player not loading?</strong> If you see <em>"Error #1000 - the video download was
         cancelled,"</em> that is your browser blocking Twitch's video, not the rig (the stream itself
-        is fine). It's usually one of these on your side:
-        <ul>
-          <li>An <strong>ad blocker or privacy extension</strong> (uBlock, Brave Shields, Ghostery, etc.) - pause it for this page.</li>
-          <li><strong>Third-party cookies blocked</strong> - allow them for <code>player.twitch.tv</code>.</li>
-          <li>Click the player's <strong>"Reload Player"</strong> button, or just
-            <a href="https://www.twitch.tv/behavioraldatasciencelab" target="_blank" rel="noopener">watch directly on Twitch</a>.</li>
-        </ul>
+        is fine). Click any option below for step-by-step instructions.
+
+        <details>
+          <summary>Fastest test: is it really my browser?</summary>
+          <ol class="steps">
+            <li>Open this same page in a <strong>different browser</strong> (or a private / incognito
+              window, which runs without your extensions).</li>
+            <li>If the stream <strong>plays there</strong>, the problem is a setting or extension in
+              your main browser - use the fixes below to fix it there.</li>
+            <li>If it <strong>fails everywhere</strong>, the stream may just be briefly offline - try
+              again in a minute or <a href="https://www.twitch.tv/behavioraldatasciencelab"
+              target="_blank" rel="noopener">open it on Twitch</a>.</li>
+          </ol>
+        </details>
+
+        <details>
+          <summary>1. Pause your ad blocker / privacy extension</summary>
+          <ol class="steps">
+            <li>Look at the <strong>top-right of your browser toolbar</strong> for an extension icon -
+              e.g. uBlock Origin (red shield), AdBlock (stop-hand), Ghostery (ghost), Privacy Badger.</li>
+            <li>Click that icon, then click its big <strong>power / "pause on this site"</strong> button.</li>
+            <li><span class="browser">Brave browser:</span> click the orange <strong>lion</strong> icon
+              in the address bar and switch <strong>Shields</strong> to <strong>Down</strong> for this site.</li>
+            <li>Reload the page: <kbd>Cmd</kbd>+<kbd>R</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>R</kbd> (Windows).</li>
+          </ol>
+        </details>
+
+        <details>
+          <summary>2. Allow third-party cookies for Twitch</summary>
+          <ol class="steps">
+            <li><span class="browser">Chrome / Edge:</span> Settings &rarr; <strong>Privacy and security</strong>
+              &rarr; <strong>Third-party cookies</strong> &rarr; under "Allowed to use third-party cookies"
+              click <strong>Add</strong> and paste <code>[*.]twitch.tv</code>. Reload the page.</li>
+            <li><span class="browser">Safari:</span> menu bar &rarr; <strong>Safari</strong> &rarr;
+              <strong>Settings</strong> &rarr; <strong>Privacy</strong> &rarr; uncheck
+              <strong>"Prevent cross-site tracking"</strong> (and make sure "Block all cookies" is off). Reload.</li>
+            <li><span class="browser">Firefox:</span> click the <strong>shield</strong> icon at the left
+              of the address bar &rarr; turn <strong>Enhanced Tracking Protection</strong> to
+              <strong>Off</strong> for this site. Reload.</li>
+          </ol>
+        </details>
+
+        <details>
+          <summary>3. Reload the player, or just watch on Twitch</summary>
+          <ol class="steps">
+            <li>In the black player box, click the red <strong>"Click Here to Reload Player"</strong> button.</li>
+            <li>Still stuck? Watch the rig directly here:
+              <a href="https://www.twitch.tv/behavioraldatasciencelab" target="_blank"
+                 rel="noopener">twitch.tv/behavioraldatasciencelab</a>.</li>
+          </ol>
+        </details>
       </div>
     </div>
 
