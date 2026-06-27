@@ -74,7 +74,12 @@
     .delay { display:inline-block; margin-left:8px; padding:2px 8px; border-radius:999px;
              background:#21262d; color:var(--muted); font-size:.72rem; font-weight:500;
              vertical-align:middle; }
-    .card h2 .more { float:right; font-size:.82rem; font-weight:500; }
+    .history-cta { display:flex; align-items:center; justify-content:center; gap:9px;
+                   margin:0 0 20px; padding:15px 18px; border-radius:12px; text-decoration:none;
+                   background:rgba(63,185,80,.12); border:1px solid var(--accent); color:var(--accent);
+                   font-size:1.05rem; font-weight:650; transition:all .15s; }
+    .history-cta:hover { background:rgba(63,185,80,.22); box-shadow:0 0 16px rgba(63,185,80,.30); }
+    .history-cta .arrow { font-size:1.15em; line-height:1; }
     footer { text-align:center; color:var(--muted); font-size:.8rem; padding:8px 16px 32px; }
     a { color:#58a6ff; text-decoration:none; }
     /* lab-branded top bar (links back to the main lab site; echoes its cyber theme) */
@@ -211,7 +216,7 @@
     </div>
 
     <div class="card">
-      <h2>Live tracking <span class="delay">&#8776; 3 min behind the video</span><a href="history.html" class="more">View full history &rarr;</a></h2>
+      <h2>Live tracking <span class="delay">&#8776; 3 min behind the video</span></h2>
       <img id="plot" class="plot" src="live.png" alt="Live planarian tracking plots" />
       <div class="meta">
         <span>Tracking trails the live stream by about 3 minutes (the clip has to finish
@@ -219,6 +224,8 @@
         <span id="updated">refreshing&hellip;</span>
       </div>
     </div>
+
+    <a class="history-cta" href="history.html">View the full run history &mdash; every point since the start <span class="arrow">&rarr;</span></a>
 
     <div class="card">
       <h2>How it works</h2>
