@@ -34,6 +34,11 @@
       .mobile-watch .tri { width:0; height:0; border-style:solid;
         border-width:10px 0 10px 16px; border-color:transparent transparent transparent #fff; }
     }
+    .video-help { padding:10px 16px; color:var(--muted); font-size:.82rem; line-height:1.5;
+                  border-top:1px solid #21262d; }
+    .video-help strong { color:var(--fg); font-weight:600; }
+    .video-help ul { margin:6px 0 0; padding-left:18px; }
+    .video-help li { margin:2px 0; }
     .plot { display:block; width:100%; height:auto; background:#fff; }
     .meta { padding:10px 16px; color:var(--muted); font-size:.85rem;
             display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
@@ -68,6 +73,17 @@
              alt="Live rig preview" />
         <span class="badge"><span class="tri"></span> Watch live on Twitch</span>
       </a>
+      <div class="video-help">
+        <strong>Player not loading?</strong> If you see <em>"Error #1000 - the video download was
+        cancelled,"</em> that is your browser blocking Twitch's video, not the rig (the stream itself
+        is fine). It's usually one of these on your side:
+        <ul>
+          <li>An <strong>ad blocker or privacy extension</strong> (uBlock, Brave Shields, Ghostery, etc.) - pause it for this page.</li>
+          <li><strong>Third-party cookies blocked</strong> - allow them for <code>player.twitch.tv</code>.</li>
+          <li>Click the player's <strong>"Reload Player"</strong> button, or just
+            <a href="https://www.twitch.tv/behavioraldatasciencelab" target="_blank" rel="noopener">watch directly on Twitch</a>.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="card">
