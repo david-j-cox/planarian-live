@@ -56,6 +56,10 @@
     .video-help kbd { background:#21262d; border:1px solid #30363d; border-radius:4px;
                       padding:1px 5px; font-size:.9em; font-family:inherit; }
     .plot { display:block; width:100%; height:auto; background:#fff; }
+    .arch { padding:14px 16px 16px; }
+    .arch svg { display:block; width:100%; height:auto; }
+    .arch-cap { margin:10px 2px 0; color:var(--muted); font-size:.82rem; line-height:1.5; }
+    .arch-cap strong { color:var(--fg); font-weight:600; }
     .meta { padding:10px 16px; color:var(--muted); font-size:.85rem;
             display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
     .dot { color:var(--accent); }
@@ -152,12 +156,76 @@
     </div>
 
     <div class="card">
-      <h2>Live tracking <span class="delay">&#8776; 2 min behind the video</span></h2>
+      <h2>Live tracking <span class="delay">&#8776; 3 min behind the video</span></h2>
       <img id="plot" class="plot" src="live.png" alt="Live planarian tracking plots" />
       <div class="meta">
-        <span>Tracking trails the live stream by about 2 minutes (the clip has to finish
+        <span>Tracking trails the live stream by about 3 minutes (the clip has to finish
               recording, upload, and process before it appears here).</span>
         <span id="updated">refreshing&hellip;</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>How it works</h2>
+      <div class="arch">
+        <svg viewBox="0 0 1000 410" role="img"
+             aria-label="System architecture: rig and capture Mac stream live video and upload 1-minute clips to Google Drive; a compute Mac pulls and processes them every 90 seconds and publishes the plot to this page.">
+          <defs>
+            <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#8b949e"/>
+            </marker>
+            <marker id="ahg" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#3fb950"/>
+            </marker>
+          </defs>
+          <!-- edges -->
+          <line x1="160" y1="205" x2="191" y2="205" stroke="#8b949e" stroke-width="2" marker-end="url(#ah)"/>
+          <path d="M340,182 C366,140 360,112 378,86" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#ah)"/>
+          <path d="M340,228 C366,268 360,296 378,322" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#ah)"/>
+          <line x1="560" y1="324" x2="596" y2="324" stroke="#8b949e" stroke-width="2" marker-end="url(#ah)"/>
+          <path d="M560,84 C700,108 768,150 842,190" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#ahg)"/>
+          <path d="M804,312 C824,294 832,272 842,244" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#ahg)"/>
+          <!-- edge labels -->
+          <text x="664" y="120" fill="#3fb950" font-size="12.5" font-family="sans-serif">live video</text>
+          <text x="424" y="244" fill="#8b949e" font-size="12.5" font-family="sans-serif">1-min clips</text>
+          <text x="806" y="290" fill="#3fb950" font-size="12.5" font-family="sans-serif" text-anchor="end">plot (~3 min behind)</text>
+          <!-- A: rig -->
+          <rect x="15" y="158" width="145" height="94" rx="10" fill="#161b22" stroke="#30363d"/>
+          <text x="87" y="194" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">Planarian rig</text>
+          <text x="87" y="216" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">dish + overhead</text>
+          <text x="87" y="232" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">camera</text>
+          <!-- B: capture mac -->
+          <rect x="195" y="158" width="145" height="94" rx="10" fill="#161b22" stroke="#30363d"/>
+          <text x="267" y="194" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">Capture Mac</text>
+          <text x="267" y="216" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">OBS encoder +</text>
+          <text x="267" y="232" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">clip recorder</text>
+          <!-- C: live stream -->
+          <rect x="380" y="42" width="180" height="84" rx="10" fill="#161b22" stroke="#3fb950"/>
+          <text x="470" y="76" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">Live video stream</text>
+          <text x="470" y="98" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">Twitch now</text>
+          <text x="470" y="114" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">(YouTube soon)</text>
+          <!-- D: google drive -->
+          <rect x="380" y="282" width="180" height="84" rx="10" fill="#161b22" stroke="#30363d"/>
+          <text x="470" y="316" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">Google Drive</text>
+          <text x="470" y="338" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">1-min clip buffer</text>
+          <text x="470" y="354" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">(works on any network)</text>
+          <!-- E: compute mac -->
+          <rect x="600" y="278" width="205" height="96" rx="10" fill="#161b22" stroke="#30363d"/>
+          <text x="702" y="308" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">Compute Mac</text>
+          <text x="702" y="328" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">every 90s: YOLO tracker +</text>
+          <text x="702" y="344" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">behavior model (Apple MPS)</text>
+          <text x="702" y="360" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">renders the plot</text>
+          <!-- F: this page -->
+          <rect x="845" y="150" width="140" height="110" rx="10" fill="#161b22" stroke="#3fb950"/>
+          <text x="915" y="186" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">This page</text>
+          <text x="915" y="208" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">GitHub Pages:</text>
+          <text x="915" y="224" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">live video +</text>
+          <text x="915" y="240" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">tracking plot</text>
+        </svg>
+        <p class="arch-cap">The <strong>video</strong> you see above is real-time. The <strong>tracking
+          plot</strong> takes a different path: 1-minute clips upload to Google Drive, and a second Mac
+          pulls and processes them with a YOLO tracker + behavior model every 90 seconds, then publishes
+          the plot here - so the data trails the video by about 3 minutes.</p>
       </div>
     </div>
   </div>
