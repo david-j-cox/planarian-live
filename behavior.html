@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label worm behavior &mdash; Behavioral Data Science Lab</title>
+<style>
+  :root { --bg:#0e1116; --panel:#161b22; --fg:#e6edf3; --muted:#8b949e; --accent:#3fb950; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.5; }
+  .wrap { max-width:720px; margin:0 auto; padding:18px 16px 60px; }
+  header { text-align:center; padding:18px 0 8px; }
+  header h1 { margin:0 0 6px; font-size:1.4rem; }
+  header p { margin:0 auto; max-width:620px; color:var(--muted); font-size:.92rem; }
+  a { color:var(--accent); }
+  .card { background:var(--panel); border:1px solid #21262d; border-radius:12px; padding:16px; margin-top:16px; }
+  .howto { font-size:.9rem; color:var(--muted); }
+  .howto b { color:var(--fg); }
+  .namebar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:.9rem; }
+  .namebar label { color:var(--fg); } .namebar .opt { color:var(--muted); font-weight:400; }
+  .namebar input { font:inherit; background:#0e1116; color:var(--fg); border:1px solid #30363d;
+                   border-radius:8px; padding:8px 12px; min-width:220px; flex:1; }
+  .namebar input:focus { outline:none; border-color:var(--accent); }
+  .stage { line-height:0; border-radius:8px; overflow:hidden; background:#000; text-align:center; }
+  .stage img { max-width:100%; height:auto; display:inline-block; }
+  .choices { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:14px; }
+  .choice { text-align:left; border:1px solid #30363d; background:#21262d; color:var(--fg);
+            border-radius:10px; padding:11px 13px; cursor:pointer; font:inherit; }
+  .choice:hover { border-color:var(--accent); }
+  .choice.on { background:rgba(63,185,80,.16); border-color:var(--accent); color:#7ee787; }
+  .choice .k { color:var(--muted); font-size:.78em; } .choice.on .k { color:#7ee787; }
+  .choice .d { display:block; color:var(--muted); font-size:.78em; font-weight:400; margin-top:2px; }
+  .choice.on .d { color:#9ae6a4; }
+  .bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px; }
+  button.act { font:inherit; border:1px solid #30363d; background:#21262d; color:var(--fg);
+               padding:10px 16px; border-radius:8px; cursor:pointer; }
+  button.act:hover { border-color:var(--accent); }
+  button.primary { background:rgba(63,185,80,.16); border-color:rgba(63,185,80,.5); color:#7ee787; font-weight:600; }
+  button:disabled { opacity:.4; cursor:not-allowed; }
+  .spacer { flex:1; } .progress { color:var(--muted); font-size:.85rem; } .progress .count { color:var(--fg); font-weight:600; }
+  kbd { font-family:inherit; font-size:.82em; background:#0e1116; border:1px solid #30363d;
+        border-bottom-width:2px; border-radius:5px; padding:0 6px; color:var(--muted); margin-left:2px; }
+  .note { font-size:.78rem; color:var(--muted); margin-top:14px; }
+  .done { text-align:center; padding:30px 10px; } .done h2 { color:#7ee787; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>What is the worm doing?</h1>
+    <p>Watch each short looping clip of the planarian and tell us its behavior. Pick everything that
+       applies &mdash; a worm can glide and turn at the same time. No expertise needed.</p>
+  </header>
+
+  <div id="app">
+    <div class="card howto">
+      <b>Watch the clip, then tap every behavior you see</b> (or <kbd>1</kbd>&ndash;<kbd>5</kbd>), and press
+      <kbd>Enter</kbd> for the next one. Can't tell? Press <kbd>s</kbd> to skip.
+    </div>
+
+    <div class="card namebar">
+      <label for="name">Your name
+        <span class="opt">(optional &mdash; to be credited on the
+          <a href="contributors.html">contributors</a> page)</span></label>
+      <input id="name" type="text" maxlength="40" placeholder="e.g. Alex from Ohio" autocomplete="name">
+    </div>
+
+    <div class="card">
+      <div class="stage"><img id="clip" alt="A short clip of a planarian to label"></div>
+      <div class="choices" id="choices"></div>
+      <div class="bar">
+        <button class="act" id="skip">Skip <kbd>s</kbd></button>
+        <div class="spacer"></div>
+        <span class="progress"><span class="count" id="count">0</span> labeled &middot;
+          clip <span id="idx">1</span> of <span id="total">0</span></span>
+        <button class="act primary" id="next" disabled>Confirm &amp; next <kbd>&crarr;</kbd></button>
+      </div>
+      <p class="note">For research only. Every label is <b>reviewed by a researcher</b> before it trains a
+        model. A name is optional. &nbsp;<a href="index.html">&larr; live tracker</a> &middot;
+        <a href="contribute.html">label location &rarr;</a> &middot;
+        <a href="contributors.html">contributors</a></p>
+    </div>
+  </div>
+
+  <div id="done" class="card done hidden">
+    <h2>Thank you!</h2>
+    <p id="done-msg"></p>
+    <div class="bar" style="justify-content:center">
+      <button class="act" onclick="location.reload()">Label another set</button>
+      <button class="act primary" onclick="location.href='index.html'">Back to the live worm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbywrBvEGz-XVoyAhuQqmDbhwZKbpDSStgdnmzMFgAVWnQfgh42AZWuWrymA7brlZ4az/exec";
+  // lay-friendly label -> training class
+  const BEHAVIORS = [
+    { key: 'resting',    label: 'Resting / still', desc: 'not moving' },
+    { key: 'gliding',    label: 'Gliding',         desc: 'smooth crawling along' },
+    { key: 'turning',    label: 'Turning',         desc: 'changing direction' },
+    { key: 'contracted', label: 'Scrunching up',   desc: 'balled up / contracted' },
+    { key: 'wig_wag',    label: 'Head waving',     desc: 'sweeping its head side to side' },
+  ];
+
+  const session = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  let tasks = [], i = 0, count = 0, sel = new Set();
+
+  const clip = document.getElementById('clip');
+  const nextBtn = document.getElementById('next');
+  const choicesEl = document.getElementById('choices');
+  const nameInput = document.getElementById('name');
+  nameInput.value = localStorage.getItem('contrib_name') || '';
+  nameInput.addEventListener('input', () => localStorage.setItem('contrib_name', nameInput.value.trim()));
+
+  choicesEl.innerHTML = BEHAVIORS.map((b, n) =>
+    `<button class="choice" data-key="${b.key}"><span class="k">${n + 1}.</span> ${b.label}` +
+    `<span class="d">${b.desc}</span></button>`).join('');
+  const buttons = [...choicesEl.querySelectorAll('.choice')];
+  buttons.forEach(btn => btn.addEventListener('click', () => toggle(btn.dataset.key)));
+
+  function toggle(key) {
+    if (sel.has(key)) sel.delete(key); else sel.add(key);
+    buttons.forEach(b => b.classList.toggle('on', sel.has(b.dataset.key)));
+    nextBtn.disabled = sel.size === 0;
+  }
+
+  fetch('behavior_tasks.json?t=' + Date.now()).then(r => r.json()).then(d => {
+    tasks = d.tasks || [];
+    document.getElementById('total').textContent = tasks.length;
+    show();
+  }).catch(() => { clip.alt = 'Could not load clips. Please try again later.'; });
+
+  function show() {
+    if (i >= tasks.length) return finish();
+    sel.clear(); buttons.forEach(b => b.classList.remove('on')); nextBtn.disabled = true;
+    document.getElementById('idx').textContent = Math.min(i + 1, tasks.length);
+    clip.src = tasks[i].gif + '?t=' + Date.now();
+  }
+
+  function record() {
+    if (!sel.size) return;
+    const t = tasks[i];
+    submit({ kind: 'behaviors', name: nameInput.value.trim().slice(0, 40), session,
+             task_id: t.id, behaviors: [...sel].join(';'), ts: new Date().toISOString() });
+    count++; document.getElementById('count').textContent = count;
+    i++; show();
+  }
+
+  function submit(payload) {
+    if (!SUBMIT_URL) return;
+    fetch(SUBMIT_URL, { method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) }).catch(() => {});
+  }
+
+  nextBtn.addEventListener('click', record);
+  document.getElementById('skip').addEventListener('click', () => { i++; show(); });
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('done').classList.contains('hidden')) return;
+    if (document.activeElement === nameInput) return;
+    const k = e.key.toLowerCase();
+    const n = parseInt(k, 10);
+    if (n >= 1 && n <= BEHAVIORS.length) { e.preventDefault(); toggle(BEHAVIORS[n - 1].key); }
+    else if (k === 'enter' || k === ' ') { e.preventDefault(); record(); }
+    else if (k === 's') { e.preventDefault(); i++; show(); }
+  });
+
+  function finish() {
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('done').classList.remove('hidden');
+    document.getElementById('done-msg').textContent =
+      `You labeled ${count} clip${count === 1 ? '' : 's'}. Submitted for researcher review — thank you for helping train the worm tracker!`;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+{
+  "task_type": "behavior",
+  "window_s": 5.0,
+  "tasks": [
+    {
+      "id": "b000",
+      "gif": "behavior_clips/b000.gif",
+      "net_mm": 8.6
+    },
+    {
+      "id": "b001",
+      "gif": "behavior_clips/b001.gif",
+      "net_mm": 0.0
+    },
+    {
+      "id": "b002",
+      "gif": "behavior_clips/b002.gif",
+      "net_mm": 11.3
+    },
+    {
+      "id": "b003",
+      "gif": "behavior_clips/b003.gif",
+      "net_mm": 0.7
+    },
+    {
+      "id": "b004",
+      "gif": "behavior_clips/b004.gif",
+      "net_mm": 7.1
+    },
+    {
+      "id": "b005",
+      "gif": "behavior_clips/b005.gif",
+      "net_mm": 7.9
+    },
+    {
+      "id": "b006",
+      "gif": "behavior_clips/b006.gif",
+      "net_mm": 7.7
+    },
+    {
+      "id": "b007",
+      "gif": "behavior_clips/b007.gif",
+      "net_mm": 2.9
+    },
+    {
+      "id": "b008",
+      "gif": "behavior_clips/b008.gif",
+      "net_mm": 9.4
+    },
+    {
+      "id": "b009",
+      "gif": "behavior_clips/b009.gif",
+      "net_mm": 0.0
+    },
+    {
+      "id": "b010",
+      "gif": "behavior_clips/b010.gif",
+      "net_mm": 0.3
+    },
+    {
+      "id": "b011",
+      "gif": "behavior_clips/b011.gif",
+      "net_mm": 18.8
+    },
+    {
+      "id": "b012",
+      "gif": "behavior_clips/b012.gif",
+      "net_mm": 7.5
+    },
+    {
+      "id": "b013",
+      "gif": "behavior_clips/b013.gif",
+      "net_mm": 0.0
+    },
+    {
+      "id": "b014",
+      "gif": "behavior_clips/b014.gif",
+      "net_mm": 10.6
+    },
+    {
+      "id": "b015",
+      "gif": "behavior_clips/b015.gif",
+      "net_mm": 12.3
+    },
+    {
+      "id": "b016",
+      "gif": "behavior_clips/b016.gif",
+      "net_mm": 11.9
+    },
+    {
+      "id": "b017",
+      "gif": "behavior_clips/b017.gif",
+      "net_mm": 1.0
+    },
+    {
+      "id": "b018",
+      "gif": "behavior_clips/b018.gif",
+      "net_mm": 4.3
+    },
+    {
+      "id": "b019",
+      "gif": "behavior_clips/b019.gif",
+      "net_mm": 0.0
+    },
+    {
+      "id": "b020",
+      "gif": "behavior_clips/b020.gif",
+      "net_mm": 7.5
+    },
+    {
+      "id": "b021",
+      "gif": "behavior_clips/b021.gif",
+      "net_mm": 0.0
+    },
+    {
+      "id": "b022",
+      "gif": "behavior_clips/b022.gif",
+      "net_mm": 0.0
+    },
+    {
+      "id": "b023",
+      "gif": "behavior_clips/b023.gif",
+      "net_mm": 0.2
+    }
+  ]
+}
