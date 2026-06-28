@@ -1,0 +1,405 @@
+{
+  "task_type": "locate_worm",
+  "tasks": [
+    {
+      "id": "c000",
+      "image": "contribute_frames/c000.jpg",
+      "src_clip": "2026-06-26_14-03-39.mkv",
+      "src_frame": 240,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c001",
+      "image": "contribute_frames/c001.jpg",
+      "src_clip": "2026-06-26_15-40-01.mkv",
+      "src_frame": 346,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 742
+    },
+    {
+      "id": "c002",
+      "image": "contribute_frames/c002.jpg",
+      "src_clip": "2026-06-27_05-20-48.mkv",
+      "src_frame": 214,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 741
+    },
+    {
+      "id": "c003",
+      "image": "contribute_frames/c003.jpg",
+      "src_clip": "2026-06-26_14-58-25.mkv",
+      "src_frame": 482,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c004",
+      "image": "contribute_frames/c004.jpg",
+      "src_clip": "2026-06-26_14-35-06.mkv",
+      "src_frame": 391,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 735
+    },
+    {
+      "id": "c005",
+      "image": "contribute_frames/c005.jpg",
+      "src_clip": "2026-06-27_03-08-29.mkv",
+      "src_frame": 256,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 747
+    },
+    {
+      "id": "c006",
+      "image": "contribute_frames/c006.jpg",
+      "src_clip": "2026-06-26_14-54-22.mkv",
+      "src_frame": 223,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c007",
+      "image": "contribute_frames/c007.jpg",
+      "src_clip": "2026-06-27_02-18-58.mkv",
+      "src_frame": 369,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 744
+    },
+    {
+      "id": "c008",
+      "image": "contribute_frames/c008.jpg",
+      "src_clip": "2026-06-27_03-33-45.mkv",
+      "src_frame": 305,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 749
+    },
+    {
+      "id": "c009",
+      "image": "contribute_frames/c009.jpg",
+      "src_clip": "2026-06-27_04-28-17.mkv",
+      "src_frame": 157,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 744
+    },
+    {
+      "id": "c010",
+      "image": "contribute_frames/c010.jpg",
+      "src_clip": "2026-06-27_04-03-03.mkv",
+      "src_frame": 121,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 747
+    },
+    {
+      "id": "c011",
+      "image": "contribute_frames/c011.jpg",
+      "src_clip": "2026-06-27_00-19-40.mkv",
+      "src_frame": 469,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 748
+    },
+    {
+      "id": "c012",
+      "image": "contribute_frames/c012.jpg",
+      "src_clip": "2026-06-26_16-42-38.mkv",
+      "src_frame": 272,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 719
+    },
+    {
+      "id": "c013",
+      "image": "contribute_frames/c013.jpg",
+      "src_clip": "2026-06-27_02-12-52.mkv",
+      "src_frame": 326,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 738
+    },
+    {
+      "id": "c014",
+      "image": "contribute_frames/c014.jpg",
+      "src_clip": "2026-06-26_15-08-35.mkv",
+      "src_frame": 430,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c015",
+      "image": "contribute_frames/c015.jpg",
+      "src_clip": "2026-06-26_16-51-49.mkv",
+      "src_frame": 389,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 751
+    },
+    {
+      "id": "c016",
+      "image": "contribute_frames/c016.jpg",
+      "src_clip": "2026-06-26_15-52-08.mkv",
+      "src_frame": 508,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c017",
+      "image": "contribute_frames/c017.jpg",
+      "src_clip": "2026-06-26_15-46-04.mkv",
+      "src_frame": 354,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c018",
+      "image": "contribute_frames/c018.jpg",
+      "src_clip": "2026-06-27_00-04-29.mkv",
+      "src_frame": 305,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 745
+    },
+    {
+      "id": "c019",
+      "image": "contribute_frames/c019.jpg",
+      "src_clip": "2026-06-27_04-11-06.mkv",
+      "src_frame": 514,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 746
+    },
+    {
+      "id": "c020",
+      "image": "contribute_frames/c020.jpg",
+      "src_clip": "2026-06-27_00-05-30.mkv",
+      "src_frame": 346,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 746
+    },
+    {
+      "id": "c021",
+      "image": "contribute_frames/c021.jpg",
+      "src_clip": "2026-06-27_00-22-42.mkv",
+      "src_frame": 157,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 718
+    },
+    {
+      "id": "c022",
+      "image": "contribute_frames/c022.jpg",
+      "src_clip": "2026-06-27_03-20-36.mkv",
+      "src_frame": 363,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 750
+    },
+    {
+      "id": "c023",
+      "image": "contribute_frames/c023.jpg",
+      "src_clip": "2026-06-28_09-09-01.mkv",
+      "src_frame": 169,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 714
+    },
+    {
+      "id": "c024",
+      "image": "contribute_frames/c024.jpg",
+      "src_clip": "2026-06-26_14-38-08.mkv",
+      "src_frame": 358,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c025",
+      "image": "contribute_frames/c025.jpg",
+      "src_clip": "2026-06-27_03-25-39.mkv",
+      "src_frame": 352,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 750
+    },
+    {
+      "id": "c026",
+      "image": "contribute_frames/c026.jpg",
+      "src_clip": "2026-06-26_15-38-59.mkv",
+      "src_frame": 100,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c027",
+      "image": "contribute_frames/c027.jpg",
+      "src_clip": "2026-06-26_14-10-48.mkv",
+      "src_frame": 315,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c028",
+      "image": "contribute_frames/c028.jpg",
+      "src_clip": "2026-06-26_16-39-36.mkv",
+      "src_frame": 488,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 746
+    },
+    {
+      "id": "c029",
+      "image": "contribute_frames/c029.jpg",
+      "src_clip": "2026-06-26_13-57-35.mkv",
+      "src_frame": 184,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 745
+    },
+    {
+      "id": "c030",
+      "image": "contribute_frames/c030.jpg",
+      "src_clip": "2026-06-26_15-05-33.mkv",
+      "src_frame": 403,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 708
+    },
+    {
+      "id": "c031",
+      "image": "contribute_frames/c031.jpg",
+      "src_clip": "2026-06-26_14-02-39.mkv",
+      "src_frame": 92,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 736
+    },
+    {
+      "id": "c032",
+      "image": "contribute_frames/c032.jpg",
+      "src_clip": "2026-06-27_02-40-10.mkv",
+      "src_frame": 487,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 743
+    },
+    {
+      "id": "c033",
+      "image": "contribute_frames/c033.jpg",
+      "src_clip": "2026-06-26_16-33-31.mkv",
+      "src_frame": 499,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    },
+    {
+      "id": "c034",
+      "image": "contribute_frames/c034.jpg",
+      "src_clip": "2026-06-27_10-47-25.mkv",
+      "src_frame": 167,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 717
+    },
+    {
+      "id": "c035",
+      "image": "contribute_frames/c035.jpg",
+      "src_clip": "2026-06-27_00-26-45.mkv",
+      "src_frame": 178,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 744
+    },
+    {
+      "id": "c036",
+      "image": "contribute_frames/c036.jpg",
+      "src_clip": "2026-06-27_02-51-17.mkv",
+      "src_frame": 163,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 751
+    },
+    {
+      "id": "c037",
+      "image": "contribute_frames/c037.jpg",
+      "src_clip": "2026-06-27_03-52-57.mkv",
+      "src_frame": 332,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 745
+    },
+    {
+      "id": "c038",
+      "image": "contribute_frames/c038.jpg",
+      "src_clip": "2026-06-28_08-58-51.mkv",
+      "src_frame": 408,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 714
+    },
+    {
+      "id": "c039",
+      "image": "contribute_frames/c039.jpg",
+      "src_clip": "2026-06-26_16-48-46.mkv",
+      "src_frame": 461,
+      "full_w": 3360,
+      "full_h": 2100,
+      "web_w": 760,
+      "web_h": 760
+    }
+  ]
+}
