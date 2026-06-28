@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Help label the worm tracker &mdash; Behavioral Data Science Lab</title>
+<style>
+  :root { --bg:#0e1116; --panel:#161b22; --fg:#e6edf3; --muted:#8b949e; --accent:#3fb950; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         line-height:1.5; }
+  .wrap { max-width:860px; margin:0 auto; padding:18px 16px 60px; }
+  header { text-align:center; padding:18px 0 8px; }
+  header h1 { margin:0 0 6px; font-size:1.4rem; }
+  header p { margin:0 auto; max-width:640px; color:var(--muted); font-size:.92rem; }
+  a { color:var(--accent); }
+  .card { background:var(--panel); border:1px solid #21262d; border-radius:12px;
+          padding:16px; margin-top:16px; }
+  .howto { font-size:.9rem; color:var(--muted); }
+  .howto b { color:var(--fg); }
+  .namebar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:.9rem; }
+  .namebar label { color:var(--fg); }
+  .namebar .opt { color:var(--muted); font-weight:400; }
+  .namebar input { font:inherit; background:#0e1116; color:var(--fg); border:1px solid #30363d;
+                   border-radius:8px; padding:8px 12px; min-width:220px; flex:1; }
+  .namebar input:focus { outline:none; border-color:var(--accent); }
+  .stage { position:relative; line-height:0; border-radius:8px; overflow:hidden;
+           background:#000; cursor:crosshair; user-select:none; touch-action:manipulation; }
+  .stage img { width:100%; height:auto; display:block; }
+  .marker { position:absolute; width:26px; height:26px; margin:-13px 0 0 -13px;
+            border:2px solid var(--accent); border-radius:50%; pointer-events:none;
+            box-shadow:0 0 0 2px rgba(0,0,0,.6); transition:opacity .1s; }
+  .marker::after { content:""; position:absolute; left:50%; top:50%; width:4px; height:4px;
+                   margin:-2px 0 0 -2px; background:var(--accent); border-radius:50%; }
+  .bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px; }
+  button { font:inherit; border:1px solid #30363d; background:#21262d; color:var(--fg);
+           padding:10px 16px; border-radius:8px; cursor:pointer; }
+  button:hover { border-color:var(--accent); }
+  button.primary { background:rgba(63,185,80,.16); border-color:rgba(63,185,80,.5);
+                   color:#7ee787; font-weight:600; }
+  button:disabled { opacity:.4; cursor:not-allowed; }
+  kbd { font-family:inherit; font-size:.82em; background:#0e1116; border:1px solid #30363d;
+        border-bottom-width:2px; border-radius:5px; padding:0 6px; color:var(--muted); margin-left:2px; }
+  .howto kbd { background:#21262d; }
+  .spacer { flex:1; }
+  .progress { color:var(--muted); font-size:.85rem; }
+  .progress .count { color:var(--fg); font-weight:600; }
+  .note { font-size:.78rem; color:var(--muted); margin-top:14px; }
+  .done { text-align:center; padding:30px 10px; }
+  .done h2 { color:#7ee787; }
+  .hidden { display:none; }
+  .toast { font-size:.85rem; color:var(--accent); min-height:1.2em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Help teach the worm tracker</h1>
+    <p>This lab streams a live planarian (a flatworm) and tracks where it is and what it's doing.
+       The tracker learns from frames a human has marked. You can add a few &mdash; it takes seconds and
+       needs no special knowledge.</p>
+  </header>
+
+  <div id="app">
+    <div class="card howto">
+      <b>Your task:</b> click directly on the <b>worm</b> in each image &mdash; it's the small dark
+      shape on the light dish, then press <kbd>Enter</kbd> (or click <b>Confirm</b>). If you genuinely
+      can't see it, press <kbd>n</kbd> for <b>No worm visible</b>. Unsure? Press <kbd>s</kbd> to <b>Skip</b>.
+    </div>
+
+    <div class="card namebar">
+      <label for="name">Your name
+        <span class="opt">(optional &mdash; to be credited on the
+          <a href="contributors.html">contributors</a> page)</span></label>
+      <input id="name" type="text" maxlength="40" placeholder="e.g. Alex from Ohio" autocomplete="name">
+    </div>
+
+    <div class="card">
+      <div class="stage" id="stage">
+        <img id="frame" alt="A planarian dish frame to label" draggable="false">
+        <div class="marker hidden" id="marker"></div>
+      </div>
+      <div class="bar">
+        <button id="noworm">No worm visible <kbd>n</kbd></button>
+        <button id="skip">Skip <kbd>s</kbd></button>
+        <div class="spacer"></div>
+        <span class="progress"><span class="count" id="count">0</span> labeled &middot;
+          frame <span id="idx">1</span> of <span id="total">0</span></span>
+        <button id="next" class="primary" disabled>Confirm &amp; next <kbd>&crarr;</kbd></button>
+      </div>
+      <div class="toast" id="toast"></div>
+      <p class="note">For research only. Every contribution is <b>reviewed by a researcher</b> before it
+        is ever used to train a model &mdash; so a stray click can't harm the data. A name is optional;
+        leave it blank to stay anonymous. By submitting you agree your clicks may be used to improve the
+        lab's tracking models. &nbsp;<a href="index.html">&larr; live tracker</a> &middot;
+        <a href="behavior.html">label behavior &rarr;</a> &middot;
+        <a href="contributors.html">contributors</a></p>
+    </div>
+  </div>
+
+  <div id="done" class="card done hidden">
+    <h2>Thank you!</h2>
+    <p id="done-msg">Your labels were submitted for review. You just helped train a worm tracker.</p>
+    <div class="bar" style="justify-content:center">
+      <button onclick="location.reload()">Label another set</button>
+      <button class="primary" onclick="location.href='index.html'">Back to the live worm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---- CONFIG: set after deploying the serverless endpoint (Apps Script web-app URL). ----
+  // Until set, the page still works for labeling and just stores nothing server-side.
+  const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbywrBvEGz-XVoyAhuQqmDbhwZKbpDSStgdnmzMFgAVWnQfgh42AZWuWrymA7brlZ4az/exec";
+
+  const session = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  let tasks = [], i = 0, count = 0, click = null;
+
+  const stage = document.getElementById('stage');
+  const frame = document.getElementById('frame');
+  const marker = document.getElementById('marker');
+  const nextBtn = document.getElementById('next');
+  const toast = document.getElementById('toast');
+  const nameInput = document.getElementById('name');
+  nameInput.value = localStorage.getItem('contrib_name') || '';   // remember across visits
+  nameInput.addEventListener('input', () => localStorage.setItem('contrib_name', nameInput.value.trim()));
+
+  fetch('contribute_tasks.json?t=' + Date.now()).then(r => r.json()).then(d => {
+    tasks = (d.tasks || []);
+    document.getElementById('total').textContent = tasks.length;
+    show();
+  }).catch(() => { toast.textContent = 'Could not load frames. Please try again later.'; });
+
+  function show() {
+    if (i >= tasks.length) return finish();
+    click = null; marker.classList.add('hidden'); nextBtn.disabled = true;
+    document.getElementById('idx').textContent = Math.min(i + 1, tasks.length);
+    frame.src = tasks[i].image + '?t=' + Date.now();
+  }
+
+  stage.addEventListener('click', (e) => {
+    const r = frame.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    if (x < 0 || x > 1 || y < 0 || y > 1) return;
+    click = { x, y };
+    marker.style.left = (x * 100) + '%'; marker.style.top = (y * 100) + '%';
+    marker.classList.remove('hidden'); nextBtn.disabled = false;
+  });
+
+  function record(present) {
+    const t = tasks[i];
+    const payload = {
+      kind: 'locations', name: nameInput.value.trim().slice(0, 40),
+      session, task_id: t.id, src_clip: t.src_clip, src_frame: t.src_frame,
+      full_w: t.full_w, full_h: t.full_h, present: present,
+      x_frac: present && click ? +click.x.toFixed(5) : null,
+      y_frac: present && click ? +click.y.toFixed(5) : null,
+      ts: new Date().toISOString(),
+    };
+    if (present || present === false) submit(payload);
+    if (present && click) count++;
+    document.getElementById('count').textContent = count;
+    i++; show();
+  }
+
+  function submit(payload) {
+    if (!SUBMIT_URL) return;                 // not configured yet -> no-op
+    // text/plain avoids a CORS preflight against Apps Script; server parses JSON.
+    fetch(SUBMIT_URL, { method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload) }).catch(() => {});
+  }
+
+  nextBtn.addEventListener('click', () => record(true));
+  document.getElementById('noworm').addEventListener('click', () => record(false));
+  document.getElementById('skip').addEventListener('click', () => { i++; show(); });
+
+  // Keyboard: Enter/Space = confirm & next (only once you've clicked the worm),
+  // n = no worm visible, s = skip. Lets you click then keep one hand on the keys.
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('done').classList.contains('hidden')) return;  // done screen
+    const k = e.key.toLowerCase();
+    if (k === 'enter' || k === ' ') { e.preventDefault(); if (click) record(true); }
+    else if (k === 'n') { e.preventDefault(); record(false); }
+    else if (k === 's') { e.preventDefault(); i++; show(); }
+  });
+
+  function finish() {
+    document.getElementById('app').classList.add('hidden');
+    const done = document.getElementById('done'); done.classList.remove('hidden');
+    document.getElementById('done-msg').textContent =
+      `You labeled ${count} frame${count === 1 ? '' : 's'}. Submitted for researcher review &mdash; thank you for helping train the worm tracker!`
+      .replace('&mdash;', '—');
+  }
+</script>
+</body>
+</html>
