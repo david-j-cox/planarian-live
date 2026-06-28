@@ -36,6 +36,10 @@
     .plot { width:100%; height:440px; }
     .plot.sq { height:540px; }
     .stamp { color:var(--muted); font-size:.82rem; padding:0 16px 12px; }
+    .section { font-family:'Orbitron',sans-serif; font-weight:700; font-size:.8rem; letter-spacing:2px;
+               color:#00ffff; text-shadow:0 0 8px rgba(0,255,255,.4); margin:8px 2px 12px; }
+    .note { color:var(--muted); font-size:.8rem; line-height:1.5; margin:6px 8px 2px; }
+    .note b { color:var(--fg); }
     footer { text-align:center; color:var(--muted); font-size:.8rem; padding:8px 16px 32px; }
   </style>
 </head>
@@ -61,17 +65,45 @@
     <a class="backlink" href="index.html">&larr; Back to the live view</a>
     <div id="stamp" class="stamp">loading&hellip;</div>
 
+    <div id="headline" class="stamp" style="font-size:.95rem;color:var(--fg)"></div>
+
     <div class="card"><h2>Where the worm has been (lifetime dwell map)</h2>
       <div class="body"><div id="occ" class="plot sq"></div></div></div>
 
     <div class="card"><h2>Path over the whole run (colored by time: blue = oldest, red = newest)</h2>
       <div class="body"><div id="traj" class="plot sq"></div></div></div>
 
-    <div class="card"><h2>Activity over time (per-minute average speed)</h2>
-      <div class="body"><div id="speed" class="plot"></div></div></div>
+    <div class="section">Activity &amp; rhythms</div>
+
+    <div class="card"><h2>Activity by time of day (clock hour)</h2>
+      <div class="body">
+        <div id="dielcurve" class="plot" style="height:300px"></div>
+        <div id="dielheat" class="plot" style="height:320px"></div>
+        <p class="note">The rig is under <b>constant room light</b>, so this is descriptive clock-hour
+          activity &mdash; any rhythm reflects the worm's own cycle or lab disturbance, not a light schedule.
+          The shaded band is the <b>95% confidence interval across days</b>; with only a few days it's wide,
+          and because the activity bursts land at different clock times on different days it can't yet claim a
+          consistent daily rhythm. It tightens as more days accumulate.</p>
+      </div></div>
+
+    <div class="card"><h2>Distance traveled (daily, and running total)</h2>
+      <div class="body"><div id="dist" class="plot"></div></div></div>
+
+    <div class="card"><h2>Activity over time (fraction of each minute spent moving)</h2>
+      <div class="body"><div id="active" class="plot"></div></div></div>
+
+    <div class="card"><h2>Movement &amp; rest bouts (how long each lasts)</h2>
+      <div class="body"><div id="bouts" class="plot"></div>
+        <p class="note">A "bout" is an unbroken run of moving or of resting. Log scale, so each step is ~3&times; longer.</p>
+      </div></div>
+
+    <div class="section">Behavior</div>
 
     <div class="card"><h2>Behavior breakdown by day</h2>
       <div class="body"><div id="beh" class="plot"></div></div></div>
+
+    <div class="card"><h2>Behavior by time of day (clock hour)</h2>
+      <div class="body"><div id="behhour" class="plot"></div></div></div>
   </div>
 
   <footer>
@@ -116,25 +148,85 @@
       }], {...DARK, yaxis:{scaleanchor:'x', autorange:'reversed', title:'y from center (mm)'},
            xaxis:{title:'x from center (mm)'}}, CFG);
 
-      // speed over time
-      Plotly.newPlot('speed', [{
-        type:'scatter', mode:'lines', x:dates, y:d.traj.speed,
-        line:{color:'#2ca02c', width:1}, hovertemplate:'%{x}<br>%{y:.2f} mm/s<extra></extra>'
-      }], {...DARK, xaxis:{title:'date'}, yaxis:{title:'avg speed (mm/s)'}}, CFG);
+      // headline numbers
+      document.getElementById('headline').innerHTML =
+        `<b>${(d.total_distance_m||0).toLocaleString()} m</b> traveled &middot; ` +
+        `<b>${d.span_hours} h</b> watched &middot; <b>${Object.keys(d.daily||{}).length}</b> days`;
 
-      // behavior fractions by day (stacked)
+      // --- activity by clock hour: averaged curve + 95% CI band across days ---
+      Plotly.newPlot('dielcurve', [
+        {type:'scatter', mode:'lines', x:d.diel.hour, y:d.diel.hi, line:{width:0},
+         showlegend:false, hoverinfo:'skip'},
+        {type:'scatter', mode:'lines', x:d.diel.hour, y:d.diel.lo, line:{width:0},
+         fill:'tonexty', fillcolor:'rgba(63,185,80,0.18)', showlegend:false, hoverinfo:'skip'},
+        {type:'scatter', mode:'lines+markers', x:d.diel.hour, y:d.diel.active, showlegend:false,
+         line:{color:'#3fb950'}, marker:{size:6, color:'#3fb950'},
+         hovertemplate:'%{x}:00<br>%{y:.0%} moving (95%% CI shaded)<extra></extra>'}
+      ], {...DARK, title:{text:'Fraction of time moving, by clock hour (mean &plusmn; 95% CI across days)', font:{size:12}},
+           margin:{l:60,r:20,t:30,b:42},
+           xaxis:{title:'clock hour (0 = midnight)', dtick:2, range:[-0.5,23.5]},
+           yaxis:{title:'fraction moving', tickformat:'.0%', rangemode:'tozero'}}, CFG);
+
+      // --- activity by clock hour: day x hour heatmap ---
+      Plotly.newPlot('dielheat', [{
+        type:'heatmap', z:d.diel.matrix, x:d.diel.hour, y:d.diel.days, colorscale:'Viridis',
+        colorbar:{tickformat:'.0%', thickness:10, title:{text:'moving', side:'right'}},
+        hovertemplate:'%{y}  %{x}:00<br>%{z:.0%} moving<extra></extra>'
+      }], {...DARK, title:{text:'Each day x hour (lighter = more active)', font:{size:12}},
+           margin:{l:90,r:20,t:30,b:42},
+           xaxis:{title:'clock hour', dtick:2}, yaxis:{title:'', type:'category'}}, CFG);
+
+      // --- distance traveled: daily bars + cumulative line ---
+      const dd = Object.keys(d.daily).sort();
+      Plotly.newPlot('dist', [
+        {type:'bar', name:'per day', x:dd, y:dd.map(x=>d.daily[x].distance_m),
+         marker:{color:'#1f77b4'}, hovertemplate:'%{x}<br>%{y:.1f} m this day<extra></extra>'},
+        {type:'scatter', name:'running total', x:dd, y:dd.map(x=>d.daily[x].cum_distance_m),
+         yaxis:'y2', mode:'lines+markers', line:{color:'#fe9f6d'},
+         hovertemplate:'%{x}<br>%{y:.1f} m total<extra></extra>'}
+      ], {...DARK, margin:{l:60,r:62,t:14,b:46}, legend:{orientation:'h', y:1.14},
+          xaxis:{title:'day', type:'category'},
+          yaxis:{title:'distance / day (m)', rangemode:'tozero'},
+          yaxis2:{title:'cumulative (m)', overlaying:'y', side:'right', rangemode:'tozero', showgrid:false}}, CFG);
+
+      // --- activity over time (fraction of each minute moving) ---
+      Plotly.newPlot('active', [{
+        type:'scatter', mode:'lines', x:dates, y:d.traj.active,
+        line:{color:'#2ca02c', width:1}, hovertemplate:'%{x}<br>%{y:.0%} of the minute moving<extra></extra>'
+      }], {...DARK, xaxis:{title:'date'},
+           yaxis:{title:'fraction moving', tickformat:'.0%', range:[0,1]}}, CFG);
+
+      // --- movement & rest bout-duration distributions ---
+      // filled LINES (frequency polygon), not bars: a constant-width bar warps on a log
+      // axis (wide left, thin right); lines have no width to distort and compare cleanly.
+      const ctr = e => { const c=[]; for(let i=0;i<e.length-1;i++) c.push(Math.sqrt(e[i]*e[i+1])); return c; };
+      const mb=d.bouts.move, rb=d.bouts.rest, bt=[];
+      if (mb.edges.length) bt.push({type:'scatter', mode:'lines', name:`moving (n=${mb.n}, median ${mb.median}s)`,
+        x:ctr(mb.edges), y:mb.counts, line:{color:'#2ca02c', width:2}, fill:'tozeroy',
+        fillcolor:'rgba(44,160,44,0.25)', hovertemplate:'~%{x:.1f}s bouts<br>%{y} of them<extra></extra>'});
+      if (rb.edges.length) bt.push({type:'scatter', mode:'lines', name:`resting (n=${rb.n}, median ${rb.median}s)`,
+        x:ctr(rb.edges), y:rb.counts, line:{color:'#9e9e9e', width:2}, fill:'tozeroy',
+        fillcolor:'rgba(158,158,158,0.22)', hovertemplate:'~%{x:.1f}s bouts<br>%{y} of them<extra></extra>'});
+      Plotly.newPlot('bouts', bt, {...DARK, legend:{orientation:'h', y:1.16},
+        xaxis:{title:'bout duration (s, log scale)', type:'log'},
+        yaxis:{title:'number of bouts', rangemode:'tozero'}}, CFG);
+
+      // --- behavior fractions by day (already fractions; null on empty days) ---
       const days = Object.keys(d.behavior_by_day).sort();
-      const traces = BEH_ORDER.map(b => {
-        const y = days.map(day => {
-          const c = d.behavior_by_day[day]; const tot = Object.values(c).reduce((a,v)=>a+v,0);
-          return tot ? (c[b]||0)/tot : 0;
-        });
-        return {type:'bar', name:b, x:days, y, marker:{color:BEH_COLORS[b]}};
-      });
-      Plotly.newPlot('beh', traces,
-        {...DARK, barmode:'stack', legend:{orientation:'h', y:1.12},
-         xaxis:{title:'day', type:'category'},
-         yaxis:{title:'fraction of time', tickformat:'.0%', range:[0,1]}}, CFG);
+      Plotly.newPlot('beh', BEH_ORDER.map(b => ({
+        type:'bar', name:b, x:days, marker:{color:BEH_COLORS[b]},
+        y: days.map(day => { const c=d.behavior_by_day[day]; return c ? (c[b]||0) : 0; })
+      })), {...DARK, barmode:'stack', legend:{orientation:'h', y:1.12},
+            xaxis:{title:'day', type:'category'},
+            yaxis:{title:'fraction of time', tickformat:'.0%', range:[0,1]}}, CFG);
+
+      // --- behavior fractions by clock hour (stacked) ---
+      Plotly.newPlot('behhour', BEH_ORDER.map(b => ({
+        type:'bar', name:b, x:d.diel.hour, marker:{color:BEH_COLORS[b]},
+        y: d.diel.hour.map(h => { const c=d.behavior_by_hour[h]; return c ? (c[b]||0) : 0; })
+      })), {...DARK, barmode:'stack', legend:{orientation:'h', y:1.12},
+            xaxis:{title:'clock hour', dtick:2},
+            yaxis:{title:'fraction of time', tickformat:'.0%', range:[0,1]}}, CFG);
     }).catch(e => {
       document.getElementById('stamp').textContent = 'history.json not available yet - check back soon.';
     });
