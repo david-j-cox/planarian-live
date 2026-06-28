@@ -21,20 +21,11 @@
                border-bottom:1px solid #21262d; color:var(--fg); }
     .video { position:relative; width:100%; aspect-ratio:16/9; background:#000; }
     .video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-    /* Mobile: Safari can't play the inline Twitch embed, so show a tappable
-       live-preview thumbnail that opens Twitch instead. Desktop keeps the embed. */
-    .mobile-watch { display:none; }
-    @media (max-width: 640px) {
-      .video { display:none; }
-      .mobile-watch { display:block; position:relative; line-height:0; }
-      .mobile-watch img { width:100%; height:auto; background:#000; }
-      .mobile-watch .badge { position:absolute; inset:0; display:flex; gap:10px;
-        align-items:center; justify-content:center; text-decoration:none;
-        color:#fff; font-size:1rem; font-weight:650; line-height:1.2;
-        background:rgba(0,0,0,.28); }
-      .mobile-watch .tri { width:0; height:0; border-style:solid;
-        border-width:10px 0 10px 16px; border-color:transparent transparent transparent #fff; }
-    }
+    /* The YouTube embed plays inline on mobile too (no login, no Safari quirk), so
+       the embed stays on every screen; this is just a direct-link fallback. */
+    .watch-yt { display:inline-block; margin:10px 16px 0; color:var(--accent);
+      font-size:.9rem; font-weight:600; text-decoration:none; }
+    .watch-yt:hover { text-decoration:underline; }
     .video-help { padding:10px 16px 14px; color:var(--muted); font-size:.82rem; line-height:1.5;
                   border-top:1px solid #21262d; }
     .video-help strong { color:var(--fg); font-weight:600; }
@@ -80,6 +71,9 @@
                    font-size:1.05rem; font-weight:650; transition:all .15s; }
     .history-cta:hover { background:rgba(63,185,80,.22); box-shadow:0 0 16px rgba(63,185,80,.30); }
     .history-cta .arrow { font-size:1.15em; line-height:1; }
+    .contribute { margin-top:22px; padding-top:18px; border-top:1px solid #21262d; }
+    .contribute h3 { margin:0 0 6px; }
+    .contribute .history-cta { margin-top:12px; }
     footer { text-align:center; color:var(--muted); font-size:.8rem; padding:8px 16px 32px; }
     a { color:#58a6ff; text-decoration:none; }
     /* lab-branded top bar (links back to the main lab site; echoes its cyber theme) */
@@ -137,79 +131,22 @@
     <div class="card">
       <h2>Live rig <span class="dot">&#9679;</span></h2>
       <div class="video">
-        <iframe id="twitch"
-          src="https://player.twitch.tv/?channel=behavioraldatasciencelab&parent=david-j-cox.github.io&parent=localhost&parent=127.0.0.1&muted=true&autoplay=true"
+        <iframe id="player"
+          allow="autoplay; encrypted-media; picture-in-picture"
           allowfullscreen
-          title="Live Twitch stream of the planarian rig"></iframe>
+          title="Live YouTube stream of the planarian rig"></iframe>
       </div>
-      <a class="mobile-watch" href="https://www.twitch.tv/behavioraldatasciencelab"
-         target="_blank" rel="noopener" title="Watch the live rig on Twitch">
-        <img id="thumb" src="https://static-cdn.jtvnw.net/previews-ttv/live_user_behavioraldatasciencelab-640x360.jpg"
-             alt="Live rig preview" />
-        <span class="badge"><span class="tri"></span> Watch live on Twitch</span>
-      </a>
+      <a class="watch-yt" href="https://www.youtube.com/channel/UCwdmV5ZDpqNYt4sJ69cdq7g/live"
+         target="_blank" rel="noopener">Watch live on YouTube &rarr;</a>
       <div class="video-help">
         <details class="help-top">
-          <summary><strong>Player not loading?</strong> <span class="help-hint">&mdash; fixes for "Error #1000" / a blank player</span></summary>
+          <summary><strong>Player not loading?</strong> <span class="help-hint">&mdash; if the box is blank</span></summary>
           <div class="help-body">
-        <p class="intro">If you see <em>"Error #1000 - the video download was cancelled,"</em> the
-          stream itself is fine - it is your browser, not the rig.</p>
-
-        <p class="lead-fix"><strong>Most common fix:</strong> make sure you are
-          <strong>logged in to Twitch</strong>. Open
-          <a href="https://www.twitch.tv/login" target="_blank" rel="noopener">twitch.tv</a>, sign in,
-          then come back and reload this page. The embedded player needs a signed-in Twitch session to
-          start. Still stuck? Try the options below.</p>
-
-        <details>
-          <summary>Fastest test: is it really my browser?</summary>
-          <ol class="steps">
-            <li>Open this same page in a <strong>different browser</strong> (or a private / incognito
-              window, which runs without your extensions).</li>
-            <li>If the stream <strong>plays there</strong>, the problem is a setting or extension in
-              your main browser - use the fixes below to fix it there.</li>
-            <li>If it <strong>fails everywhere</strong>, the stream may just be briefly offline - try
-              again in a minute or <a href="https://www.twitch.tv/behavioraldatasciencelab"
-              target="_blank" rel="noopener">open it on Twitch</a>.</li>
-          </ol>
-        </details>
-
-        <details>
-          <summary>1. Pause your ad blocker / privacy extension</summary>
-          <ol class="steps">
-            <li>Look at the <strong>top-right of your browser toolbar</strong> for an extension icon -
-              e.g. uBlock Origin (red shield), AdBlock (stop-hand), Ghostery (ghost), Privacy Badger.</li>
-            <li>Click that icon, then click its big <strong>power / "pause on this site"</strong> button.</li>
-            <li><span class="browser">Brave browser:</span> click the orange <strong>lion</strong> icon
-              in the address bar and switch <strong>Shields</strong> to <strong>Down</strong> for this site.</li>
-            <li>Reload the page: <kbd>Cmd</kbd>+<kbd>R</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>R</kbd> (Windows).</li>
-          </ol>
-        </details>
-
-        <details>
-          <summary>2. Allow third-party cookies for Twitch</summary>
-          <ol class="steps">
-            <li><span class="browser">Chrome / Edge:</span> Settings &rarr; <strong>Privacy and security</strong>
-              &rarr; <strong>Third-party cookies</strong> &rarr; under "Allowed to use third-party cookies"
-              click <strong>Add</strong> and paste <code>[*.]twitch.tv</code>. Reload the page.</li>
-            <li><span class="browser">Safari:</span> menu bar &rarr; <strong>Safari</strong> &rarr;
-              <strong>Settings</strong> &rarr; <strong>Privacy</strong> &rarr; uncheck
-              <strong>"Prevent cross-site tracking"</strong> (and make sure "Block all cookies" is off). Reload.</li>
-            <li><span class="browser">Firefox:</span> click the <strong>shield</strong> icon at the left
-              of the address bar &rarr; turn <strong>Enhanced Tracking Protection</strong> to
-              <strong>Off</strong> for this site. Reload.</li>
-          </ol>
-        </details>
-
-        <details>
-          <summary>3. Reload the player, or just watch on Twitch</summary>
-          <ol class="steps">
-            <li>In the black player box, click the red <strong>"Click Here to Reload Player"</strong> button.</li>
-            <li>Still stuck? Watch the rig directly here:
-              <a href="https://www.twitch.tv/behavioraldatasciencelab" target="_blank"
-                 rel="noopener">twitch.tv/behavioraldatasciencelab</a>.</li>
-          </ol>
-        </details>
+            <p class="intro">No sign-in needed. A blank player almost always means the stream is just briefly
+              offline &mdash; the rig reconnects on its own, so wait a minute and reload, or
+              <a href="https://www.youtube.com/channel/UCwdmV5ZDpqNYt4sJ69cdq7g/live" target="_blank"
+                 rel="noopener">open it directly on YouTube</a>. If it's still blank, a privacy or ad-blocking
+              extension may be blocking the embed &mdash; pause it for this site and reload.</p>
           </div>
         </details>
       </div>
@@ -264,8 +201,7 @@
           <!-- C: live stream -->
           <rect x="380" y="42" width="180" height="84" rx="10" fill="#161b22" stroke="#3fb950"/>
           <text x="470" y="76" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">Live video stream</text>
-          <text x="470" y="98" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">Twitch now</text>
-          <text x="470" y="114" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">(YouTube soon)</text>
+          <text x="470" y="106" text-anchor="middle" fill="#8b949e" font-size="11.5" font-family="sans-serif">YouTube live</text>
           <!-- D: google drive -->
           <rect x="380" y="282" width="180" height="84" rx="10" fill="#161b22" stroke="#30363d"/>
           <text x="470" y="316" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="600" font-family="sans-serif">Google Drive</text>
@@ -322,6 +258,27 @@
           the model supplies the postural calls (contracted, wig-wag).</p>
       </div>
     </div>
+
+    <div class="card">
+      <h2>How much of this is human-taught?</h2>
+      <p class="metric-sub">None of this is automatic magic &mdash; every model here learns from frames and
+        clips a person reviewed by hand, one at a time. The running totals:</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num" id="ls-total">1,514</span><span class="lbl">total human labels</span></div>
+        <div class="stat"><span class="num" id="ls-loc">786</span><span class="lbl">frames boxed (location)</span></div>
+        <div class="stat"><span class="num" id="ls-beh">728</span><span class="lbl">clips tagged (behavior)</span></div>
+        <div class="stat"><span class="num" id="ls-vid">213</span><span class="lbl">video samples</span></div>
+      </div>
+      <p class="metric-note" id="ls-updated">Hand-labeled on this rig's footage.</p>
+      <div class="contribute">
+        <h3>Want to help teach the worm-tracker?</h3>
+        <p class="metric-sub">Labeling is the bottleneck, and it's something anyone can do &mdash; no biology
+          degree required. Mark where the worm is, or tell us what it's doing, and you directly improve the
+          models running on this page. Add your name to join the <a href="contributors.html">contributors</a>.</p>
+        <a class="history-cta" href="contribute.html">Label where the worm is <span class="arrow">&rarr;</span></a>
+        <a class="history-cta" href="behavior.html">Label what the worm is doing <span class="arrow">&rarr;</span></a>
+      </div>
+    </div>
   </div>
 
   <footer>
@@ -334,14 +291,9 @@
     // Reload the plot image periodically with a cache-busting query so the
     // browser always pulls the latest render (the file is republished server-side).
     const img = document.getElementById('plot');
-    const thumb = document.getElementById('thumb');
     const stamp = document.getElementById('updated');
-    const THUMB = 'https://static-cdn.jtvnw.net/previews-ttv/live_user_behavioraldatasciencelab-640x360.jpg';
     function refresh() {
-      const t = Date.now();
-      img.src = 'live.png?t=' + t;
-      // also re-fetch the mobile Twitch preview; it follows Twitch's ~5-min cadence
-      if (thumb) thumb.src = THUMB + '?t=' + t;
+      img.src = 'live.png?t=' + Date.now();
     }
     img.addEventListener('load', () => {
       const now = new Date();
@@ -349,22 +301,40 @@
     });
     setInterval(refresh, 60000);   // every 60 s
 
-    // Twitch player self-heal. The embed sometimes shows "Error #1000 (video
-    // download cancelled)" after the tab has been backgrounded for a while
-    // (Twitch drops the idle stream). We can't read the cross-origin player's
-    // state, so we reload the iframe only when the tab returns from being hidden
-    // long enough to have likely timed out -- never mid-watch, so active viewing
-    // isn't interrupted.
-    const player = document.getElementById('twitch');
-    const playerSrc = player ? player.src : null;
+    // Human-labeling totals: fetch the latest, fall back to the baked-in numbers.
+    fetch('labels_stats.json?t=' + Date.now()).then(r => r.ok ? r.json() : null).then(s => {
+      if (!s) return;
+      const n = v => Number(v).toLocaleString();
+      const set = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.textContent = v; };
+      set('ls-total', n(s.total_labels));
+      set('ls-loc', n(s.localization_frames));
+      set('ls-beh', n(s.behavior_windows));
+      set('ls-vid', n(s.video_samples));
+      if (s.updated) set('ls-updated', 'Hand-labeled on this rig\'s footage. Updated ' + s.updated + '.');
+    }).catch(() => {});
+
+    // Always follow the CURRENT live broadcast. YouTube reassigns the video id on every
+    // restart, so the Mac resolves the live id each publish into live_video.json and we
+    // embed whatever that says -- no hard-coded id to go stale.
+    const player = document.getElementById('player');
+    let curId = null;
+    function loadStream(id) {
+      if (!id || id === curId) return;          // don't reload an unchanged stream
+      curId = id;
+      player.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&mute=1';
+    }
+    function refreshStream() {
+      fetch('live_video.json?t=' + Date.now()).then(r => r.ok ? r.json() : null).then(d => {
+        if (d && d.video_id) loadStream(d.video_id);
+      }).catch(() => {});
+    }
+    refreshStream();
+    setInterval(refreshStream, 5 * 60 * 1000);  // re-check every 5 min so a restart recovers w/o reload
+    // re-resolve when returning to a long-backgrounded tab (the id may have changed)
     let hiddenAt = null;
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        hiddenAt = Date.now();
-      } else if (hiddenAt && player && playerSrc && (Date.now() - hiddenAt) > 60000) {
-        player.src = playerSrc;   // force a fresh player load
-        hiddenAt = null;
-      }
+      if (document.visibilityState === 'hidden') hiddenAt = Date.now();
+      else if (hiddenAt && (Date.now() - hiddenAt) > 60000) { hiddenAt = null; curId = null; refreshStream(); }
     });
   </script>
 </body>
