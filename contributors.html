@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contributors &mdash; Planarian worm tracker</title>
+<style>
+  :root { --bg:#0e1116; --panel:#161b22; --fg:#e6edf3; --muted:#8b949e; --accent:#3fb950; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:18px 16px 60px; }
+  header { text-align:center; padding:18px 0 8px; }
+  header h1 { margin:0 0 6px; font-size:1.4rem; }
+  header p { margin:0 auto; max-width:620px; color:var(--muted); font-size:.92rem; }
+  a { color:var(--accent); }
+  .card { background:var(--panel); border:1px solid #21262d; border-radius:12px; padding:16px; margin-top:16px; }
+  .totals { display:flex; gap:24px; flex-wrap:wrap; justify-content:center; margin:4px 0 2px; }
+  .totals .stat { text-align:center; }
+  .totals .num { font-size:1.7rem; font-weight:700; color:var(--accent); display:block; }
+  .totals .lbl { color:var(--muted); font-size:.8rem; }
+  ol.board { list-style:none; margin:8px 0 0; padding:0; }
+  ol.board li { display:flex; align-items:center; gap:12px; padding:9px 6px;
+                border-top:1px solid #21262d; font-size:.95rem; }
+  ol.board li:first-child { border-top:none; }
+  .rank { width:1.8em; text-align:right; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .who { flex:1; }
+  .cnt { color:var(--muted); font-size:.85rem; font-variant-numeric:tabular-nums; }
+  .medal { font-size:1.05em; }
+  .muted { color:var(--muted); font-size:.85rem; }
+  .empty { color:var(--muted); text-align:center; padding:18px; }
+  .nav { text-align:center; margin-top:18px; font-size:.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Contributors</h1>
+    <p>Every person here hand-labeled worm data &mdash; marking where the worm is or what it's doing &mdash;
+       to train the models running on the live tracker. Thank you, all of you.</p>
+  </header>
+
+  <div class="card">
+    <div class="totals">
+      <div class="stat"><span class="num" id="t-people">&mdash;</span><span class="lbl">contributors</span></div>
+      <div class="stat"><span class="num" id="t-labels">&mdash;</span><span class="lbl">labels they added</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <ol class="board" id="board"><li class="empty">Loading contributors&hellip;</li></ol>
+    <p class="muted" id="foot" style="margin:12px 2px 0"></p>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">&larr; live tracker</a> &middot;
+    <a href="contribute.html">label location</a> &middot;
+    <a href="behavior.html">label behavior</a>
+  </div>
+</div>
+
+<script>
+  const URL = "https://script.google.com/macros/s/AKfycbywrBvEGz-XVoyAhuQqmDbhwZKbpDSStgdnmzMFgAVWnQfgh42AZWuWrymA7brlZ4az/exec";
+  const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const medals = ['\u{1F947}', '\u{1F948}', '\u{1F949}'];
+
+  fetch(URL + '?contributors=1').then(r => r.json()).then(d => {
+    const list = (d && d.contributors) || [];
+    const board = document.getElementById('board');
+    if (!list.length) {
+      board.innerHTML = '<li class="empty">No named contributors yet &mdash; ' +
+        '<a href="contribute.html">be the first</a>.</li>';
+      document.getElementById('t-people').textContent = '0';
+      document.getElementById('t-labels').textContent = '0';
+      return;
+    }
+    const total = list.reduce((s, c) => s + c.count, 0);
+    document.getElementById('t-people').textContent = list.length.toLocaleString();
+    document.getElementById('t-labels').textContent = total.toLocaleString();
+    board.innerHTML = list.map((c, i) =>
+      `<li><span class="rank">${medals[i] ? '<span class="medal">' + medals[i] + '</span>' : (i + 1)}</span>` +
+      `<span class="who">${esc(String(c.name)).slice(0, 40)}</span>` +
+      `<span class="cnt">${Number(c.count).toLocaleString()} label${c.count === 1 ? '' : 's'}</span></li>`
+    ).join('');
+    document.getElementById('foot').textContent =
+      'Counts are total submissions; all are researcher-reviewed before use.';
+  }).catch(() => {
+    document.getElementById('board').innerHTML =
+      '<li class="empty">Could not load contributors right now. Please try again later.</li>';
+  });
+</script>
+</body>
+</html>
